@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
-const admin = async (req, res, next) => {
+const organisateur = async (req, res, next) => {
   try {
     const token = req.header("x-auth-token");
     if (!token)
@@ -15,7 +15,7 @@ const admin = async (req, res, next) => {
         
     const user = await User.findById(verified.id);
     
-    if (user.type == "user" || user.type == "seller") {
+    if (user.type == "user" || user.type == "superviseur") {
       return res.status(401).json({ msg: "You are not an admin!" });
     }
     
@@ -27,4 +27,4 @@ const admin = async (req, res, next) => {
   }
 };
 
-module.exports = admin;
+module.exports = organisateur;

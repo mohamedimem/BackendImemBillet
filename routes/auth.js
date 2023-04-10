@@ -117,5 +117,25 @@ authRouter.put("/api/superviseur", auth, async (req, res) => {
   }
 });
 
+//update anytype type to user type
+authRouter.put("/api/user", auth, async (req, res) => {
+  try {
+    var user = await User.findById(req.user);
+    if (!user) {
+      return res.status(400).json({ msg: "User not found" });
+    }else{
+      if (user.type=='user') {
+        return res.status(400).json({ msg: "Already user" });//code 401 par hazard
+      }else{
+      user.type = 'user'; // Update the type field of the existing user
+    user = await user.save();
+    res.json(user);
+    }
+  } 
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 
 module.exports = authRouter;
